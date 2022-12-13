@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youth_ecoapp/create/create_page.dart';
 import 'package:youth_ecoapp/detail_post/detail_post_page.dart';
 import 'package:youth_ecoapp/tab/search/search_model.dart';
@@ -19,7 +20,7 @@ class SearchPage extends StatelessWidget {
     final model = SearchModel();
     return Scaffold(
       appBar: AppBar(
-        title: Text('오늘의 쓰레기 🗑️', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text('🌟 waste diary 🌟', style: TextStyle(fontWeight: FontWeight.bold),),
         backgroundColor: Colors.lightGreen,
       ),
       body:
@@ -27,9 +28,19 @@ class SearchPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              child: Text('달력자리'),
-              height: 300,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('내가 배출한 쓰레기들을 다시 내눈으로 확인하면서 👀', style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Text('무심코 버리던 쓰레기에 대한 시선을 바꾸기 위한 프로젝트', style: TextStyle(fontWeight: FontWeight.w600)),
+                ],
+              ),
             ),
+            Divider(),
+            SizedBox(height: 200),
             Divider(),
             Padding(
               padding: const EdgeInsets.all(2.0),
@@ -49,12 +60,11 @@ class SearchPage extends StatelessWidget {
                   List<Post> posts = snapshot.data!.docs.map((e) => e.data() ).toList();
 
                   return GridView.builder(
-                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: posts.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                        childAspectRatio: 7/9
+                      crossAxisCount: 4,
+                        childAspectRatio: 4/5
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       final post = posts[index];
@@ -64,8 +74,8 @@ class SearchPage extends StatelessWidget {
                             Get.to(DetailPostPage(post: post));
                           },
                           child: Card(
-                            elevation: 3.0,
-                            margin: EdgeInsets.all(5.0),
+                            elevation: 1.0,
+                            margin: EdgeInsets.all(3.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -106,6 +116,7 @@ class SearchPage extends StatelessWidget {
                 }
               ),
             ),
+            SizedBox(height: 200,)
           ],
         ),
       ),

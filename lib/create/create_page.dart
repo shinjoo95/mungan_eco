@@ -30,10 +30,10 @@ class _CreatePageState extends State<CreatePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen,
-        title: Text('쓰레기 추가하기'),
+        title: Text('Add Waste'),
         actions: [
           IconButton(
-              onPressed: () async{
+              onPressed: () async {
                 if (_image != null && _titleTextController.text.isNotEmpty) {
                   setState(() {
                     isLoading = true;
@@ -42,7 +42,7 @@ class _CreatePageState extends State<CreatePage> {
                   setState(() {
                     isLoading = false;
                   });
-                  if(mounted){
+                  if (mounted) {
                     Navigator.pop(context);
                   }
                 }
@@ -55,7 +55,28 @@ class _CreatePageState extends State<CreatePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              if(isLoading) CircularProgressIndicator(),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    child: Text(
+                  '🍀 쓰레기 일기 규칙 🍀',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('1. 하루동안 내가 배출한 모든 쓰레기 솔직하게 기록하기'),
+                  SizedBox(height: 3),
+                  Text('2. 하루 일정이 끝난 뒤 모든 쓰레기를 모아서 사진 찍은 후 '),
+                  Text('쓰레기 일기 작성하기'),
+                  SizedBox(height: 3),
+                  Text('3. 일주일 뒤 단톡방에 쓰레기 일기 캡쳐, 느낀점 공유하기'),
+                  Text('* 화장실에서 사용한 휴지는 제외😉'),
+                ],
+              ),
+              if (isLoading) CircularProgressIndicator(),
               SizedBox(height: 20),
               ImagePicField(),
               writeTextField(),
@@ -90,6 +111,7 @@ class _CreatePageState extends State<CreatePage> {
       ),
     );
   }
+
   Widget ImagePicField() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -152,7 +174,6 @@ class _CreatePageState extends State<CreatePage> {
                 ),
               ),
         SizedBox(width: 10),
-        if (_image != null) Container(child: Text('내용을 입력 해주세요'))
       ],
     );
   }
