@@ -13,7 +13,7 @@ class AccountPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: Text(
-          '프로필',
+          '${model.getNickName()}의 프로필',
         ),
         actions: [
           IconButton(onPressed: () {
@@ -43,10 +43,6 @@ class AccountPage extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 5,
-                ),
-                Text(
-                  model.getNickName(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
               ],
             ),

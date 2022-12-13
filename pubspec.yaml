@@ -52,7 +52,6 @@ dependencies:
   flutter_native_splash: ^2.2.4
   dotted_border: ^2.0.0+3
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

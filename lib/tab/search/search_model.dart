@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/post.dart';
 
 
@@ -12,4 +13,11 @@ class SearchModel{
           fromFirestore: (snapshot, _) => Post.fromJson(snapshot.data()!),
           toFirestore: (post, _) => post.toJson())
           .snapshots();
+
+  String getProfileImageUrl(){
+    return FirebaseAuth.instance.currentUser?.photoURL ?? 'assets/youth1.png';
+  }
+  String getNickName(){
+    return FirebaseAuth.instance.currentUser?.displayName ?? '닉네임';
+  }
 }
