@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   carousel_slider: ^4.1.1
   url_launcher: ^6.1.7
-  iconsax: ^0.0.8
+
   google_fonts: ^3.0.1
   animated_text_kit: ^4.2.2
   get: ^4.6.5
@@ -49,6 +49,9 @@ dependencies:
   shared_preferences: ^2.0.15
   flutterfire_ui: ^0.4.3+20
   firebase_storage: ^11.0.7
+  flutter_native_splash: ^2.2.4
+  dotted_border: ^2.0.0+3
+
 
 dev_dependencies:
   flutter_test:

@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:youth_ecoapp/create/create_model.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -15,6 +15,8 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   final model = CreateModel();
   File? _image;
+  bool isLoading = false;
+
   final _titleTextController = TextEditingController();
 
   @override
@@ -31,14 +33,21 @@ class _CreatePageState extends State<CreatePage> {
         title: Text('쓰레기 추가하기'),
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async{
                 if (_image != null && _titleTextController.text.isNotEmpty) {
-                  model.uploadPost(
-                      _titleTextController.text,
-                      _image!);
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await model.uploadPost(_titleTextController.text, _image!);
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if(mounted){
+                    Navigator.pop(context);
+                  }
                 }
               },
-              icon: Icon(CupertinoIcons.archivebox)),
+              icon: Icon(Icons.add_box_outlined)),
         ],
       ),
       body: Padding(
@@ -46,30 +55,10 @@ class _CreatePageState extends State<CreatePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              if(isLoading) CircularProgressIndicator(),
               SizedBox(height: 20),
-              if (_image != null)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: 300,
-                    height: 400,
-                    child: Image.file(
-                      _image!,
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
-                ),
+              ImagePicField(),
               writeTextField(),
-              ElevatedButton(
-                  onPressed: () async {
-                    _image = await model.getImage();
-                    setState(() {
-                      //화면 갱신
-                      //await 쓰려면 async를 써야되서 _image는 못넣음 에러남;
-                    });
-                  },
-                  child: Text('이미지 선택')),
-              SizedBox(height: 5),
             ],
           ),
         ),
@@ -99,6 +88,72 @@ class _CreatePageState extends State<CreatePage> {
           fillColor: Colors.white70,
         ),
       ),
+    );
+  }
+  Widget ImagePicField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(width: 20),
+        _image != null
+            ? DottedBorder(
+                color: Colors.green,
+                strokeWidth: 1.4,
+                dashPattern: [10, 6],
+                borderType: BorderType.RRect,
+                radius: Radius.circular(20),
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  child: IconButton(
+                    onPressed: () async {
+                      _image = await model.getImage();
+                      setState(() {});
+                    },
+                    icon: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        child: Image.file(
+                          _image!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : DottedBorder(
+                color: Colors.green,
+                strokeWidth: 1.4,
+                dashPattern: [10, 6],
+                borderType: BorderType.RRect,
+                radius: Radius.circular(20),
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  child: IconButton(
+                    onPressed: () async {
+                      _image = await model.getImage();
+                      setState(() {});
+                    },
+                    icon: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.6),
+                          shape: BoxShape.circle),
+                      child: Icon(
+                        CupertinoIcons.camera,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+        SizedBox(width: 10),
+        if (_image != null) Container(child: Text('내용을 입력 해주세요'))
+      ],
     );
   }
 }
